@@ -1,18 +1,20 @@
-# Базы данных MLflow
 *.db
 mlflow.db
 mlruns.db
 
-# Логи
 *.log
 mlflow_serve.log
 
-# Папки MLflow с артефактами (если появятся)
 mlruns/
 mlartifacts/
 
-# Окружение Python (если создадите venv внутри папки)
 venv/
 .venv/
 __pycache__/
 *.py[cod]
+
+.env
+
+# Airflow/Docker runtime artifacts for the cars lab
+cars/logs/
+cars/data/
