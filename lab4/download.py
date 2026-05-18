@@ -10,15 +10,17 @@ CLEAR_DATA_PATH = "df_clear.csv"
 def download_data():
     df = pd.read_csv(DATA_URL)
     df.to_csv(RAW_DATA_PATH, index=False)
-    print(f"Downloaded dataset: {df.shape[0]} rows, {df.shape[1]} columns")
+
+    print("Dataset downloaded")
+    print("Raw dataset shape:", df.shape)
+
     return df
 
 
 def clear_data(path2df):
     df = pd.read_csv(path2df)
 
-    drop_columns = ["PassengerId", "Name", "Ticket", "Cabin"]
-    df = df.drop(columns=drop_columns)
+    df = df.drop(columns=["PassengerId", "Name", "Ticket", "Cabin"])
 
     df["Age"] = df["Age"].fillna(df["Age"].median())
     df["Fare"] = df["Fare"].fillna(df["Fare"].median())
@@ -28,13 +30,20 @@ def clear_data(path2df):
     df["IsAlone"] = (df["FamilySize"] == 1).astype(int)
 
     cat_columns = ["Sex", "Embarked"]
-    ordinal = OrdinalEncoder()
-    df[cat_columns] = ordinal.fit_transform(df[cat_columns])
 
+    encoder = OrdinalEncoder()
+    df[cat_columns] = encoder.fit_transform(df[cat_columns])
+
+    # Удаляем дубликаты
     df = df.drop_duplicates()
     df = df.reset_index(drop=True)
 
-    df.to_csv(CLEAR_DATA_PATH, index=False
+    df.to_csv(CLEAR_DATA_PATH, index=False)
+
+    print("Clear dataset saved")
+    print("Clear dataset shape:", df.shape)
+    print("Columns:", list(df.columns))
+
     return True
 
 
