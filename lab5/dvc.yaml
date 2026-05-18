@@ -1,0 +1,50 @@
+stages:
+  prepare_dataset:
+    cmd: python src/stages/prepare_dataset.py
+    deps:
+      - src/stages/prepare_dataset.py
+      - src/config.yaml
+      - src/loggers.py
+      - data/titanic.csv
+    outs:
+      - data/cleaned_titanic.csv
+      - data/final.csv
+
+  data_split:
+    cmd: python src/stages/data_splite.py
+    deps:
+      - src/stages/data_splite.py
+      - src/stages/prepare_dataset.py
+      - src/config.yaml
+      - src/loggers.py
+      - data/final.csv
+    outs:
+      - data/train_titanic.csv
+      - data/test_titanic.csv
+
+  train:
+    cmd: python src/stages/train.py
+    deps:
+      - src/stages/train.py
+      - src/model_scripts/train.py
+      - src/config.yaml
+      - src/loggers.py
+      - data/train_titanic.csv
+      - data/test_titanic.csv
+    outs:
+      - models/titanic.joblib
+
+  test_model:
+    cmd: python src/stages/test_model.py
+    deps:
+      - src/stages/test_model.py
+      - src/config.yaml
+      - src/loggers.py
+      - models/titanic.joblib
+      - data/test_titanic.csv
+    metrics:
+      - reports/metrics.json:
+          cache: false
+    outs:
+      - reports/classification_report.txt:
+          cache: false

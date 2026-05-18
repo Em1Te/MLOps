@@ -1,0 +1,126 @@
+schema: '2.0'
+stages:
+  prepare_dataset:
+    cmd: python src/stages/prepare_dataset.py
+    deps:
+    - path: data/titanic.csv
+      hash: md5
+      md5: 61fdd54abdbf6a85b778e937122e1194
+      size: 60302
+    - path: src/config.yaml
+      hash: md5
+      md5: dd996a9f5e725b4674e8f6534dbd0871
+      size: 568
+    - path: src/loggers.py
+      hash: md5
+      md5: 5f8c13879870bd8ae1236a38c52b6c65
+      size: 973
+    - path: src/stages/prepare_dataset.py
+      hash: md5
+      md5: a822141e855969f2394df1b8a8a6c1e8
+      size: 4774
+    outs:
+    - path: data/cleaned_titanic.csv
+      hash: md5
+      md5: 31f66f8b7b48955ec5cefb15eb20f894
+      size: 51594
+    - path: data/final.csv
+      hash: md5
+      md5: ef7f6db3021b7e32347f6a637850f61c
+      size: 43794
+  data_split:
+    cmd: python src/stages/data_splite.py
+    deps:
+    - path: data/final.csv
+      hash: md5
+      md5: ef7f6db3021b7e32347f6a637850f61c
+      size: 43794
+    - path: src/config.yaml
+      hash: md5
+      md5: dd996a9f5e725b4674e8f6534dbd0871
+      size: 568
+    - path: src/loggers.py
+      hash: md5
+      md5: 5f8c13879870bd8ae1236a38c52b6c65
+      size: 973
+    - path: src/stages/data_splite.py
+      hash: md5
+      md5: e9a1acc276a503569308a3a797b7d094
+      size: 1205
+    - path: src/stages/prepare_dataset.py
+      hash: md5
+      md5: a822141e855969f2394df1b8a8a6c1e8
+      size: 4774
+    outs:
+    - path: data/test_titanic.csv
+      hash: md5
+      md5: 75a0e094d882bc71cda987496cbe6f78
+      size: 11004
+    - path: data/train_titanic.csv
+      hash: md5
+      md5: e4c6e89579dba629ce78e89bd14991fb
+      size: 32714
+  train:
+    cmd: python src/stages/train.py
+    deps:
+    - path: data/test_titanic.csv
+      hash: md5
+      md5: 75a0e094d882bc71cda987496cbe6f78
+      size: 11004
+    - path: data/train_titanic.csv
+      hash: md5
+      md5: e4c6e89579dba629ce78e89bd14991fb
+      size: 32714
+    - path: src/config.yaml
+      hash: md5
+      md5: dd996a9f5e725b4674e8f6534dbd0871
+      size: 568
+    - path: src/loggers.py
+      hash: md5
+      md5: 5f8c13879870bd8ae1236a38c52b6c65
+      size: 973
+    - path: src/model_scripts/train.py
+      hash: md5
+      md5: d6d84f540b6435a2afaff7cf4d90d608
+      size: 2988
+    - path: src/stages/train.py
+      hash: md5
+      md5: 6cc81f788842e450f46e9cbbae47ab72
+      size: 248
+    outs:
+    - path: models/titanic.joblib
+      hash: md5
+      md5: 38346cd4b2f1059c657ea3706d837cf1
+      size: 3652
+  test_model:
+    cmd: python src/stages/test_model.py
+    deps:
+    - path: data/test_titanic.csv
+      hash: md5
+      md5: 75a0e094d882bc71cda987496cbe6f78
+      size: 11004
+    - path: models/titanic.joblib
+      hash: md5
+      md5: 38346cd4b2f1059c657ea3706d837cf1
+      size: 3652
+    - path: src/config.yaml
+      hash: md5
+      md5: dd996a9f5e725b4674e8f6534dbd0871
+      size: 568
+    - path: src/loggers.py
+      hash: md5
+      md5: 5f8c13879870bd8ae1236a38c52b6c65
+      size: 973
+    - path: src/stages/test_model.py
+      hash: md5
+      md5: 472c65c8ad4ae0d72769c6ba7673cf9a
+      size: 1929
+    outs:
+    - path: reports/classification_report.txt
+      hash: md5
+      md5: fe8b225cd11fabe7e25cbb8de4c2fa7f
+      size: 334
+    - path: reports/metrics.json
+      hash: md5
+      md5: c0e803498f55df6ecdaa5b1370478124
+      size: 117

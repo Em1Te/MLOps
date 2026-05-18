@@ -1,0 +1,26 @@
+data_load:
+  dataset_csv: "data/titanic.csv"
+
+prepare:
+  cleaned_path: "data/cleaned_titanic.csv"
+
+featurize:
+  features_path: "data/final.csv"
+
+data_split:
+  test_size: 0.25
+  random_state: 42
+  trainset_path: "data/train_titanic.csv"
+  testset_path: "data/test_titanic.csv"
+
+train:
+  cv: 4
+  model_path: "models/titanic.joblib"
+  max_iter: 1000
+  C: [0.1, 1.0, 10.0]
+
+test:
+  model_path: "models/titanic.joblib"
+  testset_path: "data/test_titanic.csv"
+  metrics_path: "reports/metrics.json"
+  report_path: "reports/classification_report.txt"
